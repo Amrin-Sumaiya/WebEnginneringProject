@@ -82,7 +82,6 @@ const approveAdoptionRequest = asyncHandler(async (req, res) => {
     }
     console.log("2. Found adoption application:", adoption._id);
 
-    // ✨ FIX: Fetch the full pet document to get rescuer's info for the email ✨
     const pet = await Pet.findById(adoption.petId);
     if (!pet) {
         console.error("Approval failed: Associated pet not found.");
@@ -100,7 +99,6 @@ const approveAdoptionRequest = asyncHandler(async (req, res) => {
     await adoption.save();
     console.log("...Adoption status updated.");
 
-    // ✨ FIX: Added the email sending logic back in ✨
     try {
         console.log("6. Attempting to send approval email...");
         await sendEmail({
@@ -117,7 +115,6 @@ const approveAdoptionRequest = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, adoption, 'Adoption approved successfully!'));
 });
 
-// ADMIN: Reject an adoption request
 const rejectAdoptionRequest = asyncHandler(async (req, res) => {
     console.log("--- [DEBUG] Starting Adoption Rejection ---");
     const { adoptionId } = req.params;
@@ -131,7 +128,6 @@ const rejectAdoptionRequest = asyncHandler(async (req, res) => {
     console.log("2. Found adoption application:", adoption._id);
 
     if (adoption.petId) {
-        // ✨ FIX: Use findByIdAndUpdate for a more direct and robust update ✨
         console.log("3. Found associated pet. Reverting status to 'Available'...");
         await Pet.findByIdAndUpdate(adoption.petId, { $set: { status: 'Available' } });
         console.log("...Pet status reverted.");
