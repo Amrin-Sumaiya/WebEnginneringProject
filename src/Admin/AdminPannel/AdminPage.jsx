@@ -22,7 +22,7 @@ const AdminPage = () => {
         {/* Header with toggle button */}
         <div className="flex items-center justify-between p-4 border-b">
           {sidebarOpen && (
-            <h2 className="text-lg font-bold text-black">Admin Section</h2>
+            <h2 className="text-lg font-bold text-black">Admin section</h2>
           )}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
